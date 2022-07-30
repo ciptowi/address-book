@@ -2,38 +2,20 @@ import axios from "axios";
 import React from "react";
 import { Icon, Button, Modal, Form } from "semantic-ui-react";
 
-function EditProduct(props) {
+function EditContact(props) {
   const [open, setOpen] = React.useState(false);
-  const [product, setProduct] = React.useState({
-    name: props.name,
-    price: props.price,
-    imageurl: props.imageurl,
-  });
-  const id = props.id;
-  const token = localStorage.getItem("token");
+  const [contact, setContact] = React.useState(props);
 
   const cancelUpdate = () => {
-    setProduct({
-      name: props.name,
-      price: props.price,
-      imageurl: props.imageurl,
-    });
+    setContact(props);
     setOpen(false);
   };
-
-  const updateProduct = () => {
+  const updatecontact = () => {
     axios
-      .put(`https://test-binar.herokuapp.com/v1/products/${id}`, product, {
-        headers: {
-          Authorization: token,
-        },
-      })
+      .put(`http://localhost:5000/api/v1/contact/${contact.id}`, contact)
       .then((res) => {
-        if (res.status == 200) {
-          alert(`Product ${product.name} updated`);
-        } else {
-          alert(res.data.message);
-        }
+        alert(res.data.message);
+        window.location.reload();
       })
       .catch((err) => {
         alert(err);
@@ -55,32 +37,41 @@ function EditProduct(props) {
         closeOnDimmerClick={false}
         onClose={() => setOpen(false)}
       >
-        <Modal.Header>Edit: {product.name}</Modal.Header>
+        <Modal.Header>Edit Contact</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Field>
               <input
-                value={product.name}
+                value={contact.name}
                 onChange={(e) =>
-                  setProduct({ ...product, name: e.target.value })
+                  setContact({ ...contact, name: e.target.value })
                 }
                 required
               />
             </Form.Field>
             <Form.Field>
               <input
-                value={product.price}
+                value={contact.email}
                 onChange={(e) =>
-                  setProduct({ ...product, price: e.target.value })
+                  setContact({ ...contact, email: e.target.value })
                 }
                 required
               />
             </Form.Field>
             <Form.Field>
               <input
-                value={product.imageurl}
+                value={contact.phone}
                 onChange={(e) =>
-                  setProduct({ ...product, imageurl: e.target.value })
+                  setContact({ ...contact, phone: e.target.value })
+                }
+                required
+              />
+            </Form.Field>
+            <Form.Field>
+              <input
+                value={contact.address}
+                onChange={(e) =>
+                  setContact({ ...contact, address: e.target.value })
                 }
                 required
               />
@@ -89,7 +80,7 @@ function EditProduct(props) {
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={cancelUpdate}>Back</Button>
-          <Button positive onClick={updateProduct}>
+          <Button positive onClick={updatecontact}>
             Update
           </Button>
         </Modal.Actions>
@@ -98,4 +89,4 @@ function EditProduct(props) {
   );
 }
 
-export default EditProduct;
+export default EditContact;

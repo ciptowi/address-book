@@ -1,14 +1,15 @@
 import React from "react";
 import { Menu } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import CreateProduct from "../product/CreateContact";
+import CreateProduct from "../contact/CreateContact";
 
 function NavBar() {
   return (
     <>
       <Menu stackable size="large">
-        <h3>My Contact</h3>
-        <CreateProduct />
+        <Menu.Item header>MY CONTACT</Menu.Item>
+        <Menu.Item as="a">
+          <CreateProduct />
+        </Menu.Item>
       </Menu>
     </>
   );

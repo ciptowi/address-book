@@ -42,7 +42,7 @@ module.exports = {
     try {
       Contact.create(newContact)
         .then((data) => {
-          sendResponse(res, 200, true, null, data, null);
+          sendResponse(res, 200, true, "Contact Created", data, null);
         })
         .catch((error) => {
           sendResponse(res, 400, true, null, null, error.message);
@@ -57,7 +57,7 @@ module.exports = {
     try {
       Contact.update(newUpdate, { where: { id: id } })
         .then((data) => {
-          sendResponse(res, 200, true, null, data, null);
+          sendResponse(res, 200, true, "Contact Updated", data, null);
         })
         .catch((error) => {
           sendResponse(res, 404, true, null, null, error.message);
@@ -68,15 +68,15 @@ module.exports = {
   },
   deleteContact: (req, res) => {
     const id = req.params.id;
-    Contact.findOne({ where: { id } })
+    Contact.findOne({ where: { id: id } })
       .then((data) => {
         if (!data) {
           sendResponse(res, 404, true, "Not found", null, null);
         }
-        Room.destroy({ where: { id } });
-        sendResponse(res, 200, true, "Room was Deleted!", null, null);
+        Contact.destroy({ where: { id } });
+        sendResponse(res, 200, true, "Contact Deleted!", null, null);
       })
-      .catch(() => {
+      .catch((error) => {
         sendResponse(res, 500, true, null, null, error.message);
       });
   },

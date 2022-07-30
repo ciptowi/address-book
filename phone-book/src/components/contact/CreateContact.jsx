@@ -2,18 +2,17 @@ import axios from "axios";
 import React from "react";
 import { Button, Modal, Form } from "semantic-ui-react";
 
-function CreateProduct() {
+function CreateContact() {
   const [open, setOpen] = React.useState(false);
-  const [product, setProduct] = React.useState({
+  const [contact, setContact] = React.useState({
     name: "",
     email: "",
     phone: "",
     address: "",
   });
-  const token = localStorage.getItem("token");
 
   const cancelCreate = () => {
-    setProduct({
+    setContact({
       name: "",
       email: "",
       phone: "",
@@ -22,30 +21,31 @@ function CreateProduct() {
     setOpen(false);
   };
 
-  const createProduct = () => {
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    };
+  const createNewContact = () => {
     axios
-      .put("https://test-binar.herokuapp.com/v1/products/", product, config)
+      .post("http://localhost:5000/api/v1/contact/", contact)
       .then((res) => {
-        if (res.status == 201) {
-          alert(`Product Created`);
-        } else {
-          alert(`Not be create`);
-        }
+        alert(res.data.message);
+        setOpen(false);
+        window.location.reload();
       })
       .catch((err) => {
         alert(err);
+        setOpen(false);
       });
   };
 
-  const createNew = async () => {};
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Create new</Button>
+      <Button
+        basic
+        size="mini"
+        color="green"
+        compact
+        onClick={() => setOpen(true)}
+      >
+        Create new
+      </Button>
 
       <Modal
         size="tiny"
@@ -53,26 +53,26 @@ function CreateProduct() {
         closeOnDimmerClick={false}
         onClose={() => setOpen(false)}
       >
-        <Modal.Header>Create New</Modal.Header>
+        <Modal.Header>Create New Contact</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Field>
               <input
                 type="text"
                 placeholder="Contact Name"
-                value={product.name}
+                value={contact.name}
                 onChange={(e) =>
-                  setProduct({ ...product, name: e.target.value })
+                  setContact({ ...contact, name: e.target.value })
                 }
               />
             </Form.Field>
             <Form.Field>
               <input
-                type="text"
+                type="email"
                 placeholder="Email"
-                value={product.email}
+                value={contact.email}
                 onChange={(e) =>
-                  setProduct({ ...product, email: e.target.value })
+                  setContact({ ...contact, email: e.target.value })
                 }
               />
             </Form.Field>
@@ -80,9 +80,9 @@ function CreateProduct() {
               <input
                 type="text"
                 placeholder="Phone"
-                value={product.phone}
+                value={contact.phone}
                 onChange={(e) =>
-                  setProduct({ ...product, phone: e.target.value })
+                  setContact({ ...contact, phone: e.target.value })
                 }
               />
             </Form.Field>
@@ -90,9 +90,9 @@ function CreateProduct() {
               <input
                 type="text"
                 placeholder="Address"
-                value={product.address}
+                value={contact.address}
                 onChange={(e) =>
-                  setProduct({ ...product, address: e.target.value })
+                  setContact({ ...contact, address: e.target.value })
                 }
               />
             </Form.Field>
@@ -100,7 +100,7 @@ function CreateProduct() {
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={cancelCreate}>Back</Button>
-          <Button positive onClick={createNew}>
+          <Button positive onClick={createNewContact}>
             Create
           </Button>
         </Modal.Actions>
@@ -109,4 +109,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default CreateContact;

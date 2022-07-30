@@ -1,9 +1,15 @@
 import React from "react";
-
-import ContactList from "./components/product/ContactList";
+import { Container } from "semantic-ui-react";
+import ContactList from "./components/contact/ContactList";
+import NavBar from "./components/navbar/NavBar";
 
 function App() {
-  return <ContactList />;
+  return (
+    <Container>
+      <NavBar />
+      <ContactList />
+    </Container>
+  );
 }
 
 export default App;
